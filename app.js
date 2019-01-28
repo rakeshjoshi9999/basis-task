@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const dbConfig = require('./config/dbConfig')
 
 const app = express();
 
