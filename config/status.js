@@ -1,11 +1,7 @@
 const STATUS = {
     ERROR: {
-        BAD_REQUEST: {
-            statusCode: 400
-        },
-        NOT_FOUND: {
-            statusCode: 404
-        }
+        BAD_REQUEST: 400,
+        NOT_FOUND: 404
     },
     SUCCESS: {
         DEFAULT: 200

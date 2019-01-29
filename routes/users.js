@@ -37,10 +37,10 @@ passport.use('userJWT', strategy);
 // ::::::::::::::::::::::::ROUTES::::::::::::::::::::
 //User signup route
 var Joi = {
-    username: expressJoi.Joi.types.String().min(3).max(1000).required(),
-    firstname: expressJoi.Joi.types.String().min(3).max(1000).required(),
-    lastname: expressJoi.Joi.types.String().min(3).max(1000).required(),
-    email: expressJoi.Joi.types.String().min(3).max(1000).required(),
+    username: expressJoi.Joi.types.String().min(3).max(30).required(),
+    firstname: expressJoi.Joi.types.String().min(3).max(30).required(),
+    lastname: expressJoi.Joi.types.String().min(3).max(30),
+    email: expressJoi.Joi.types.String().min(3).max(50).required(),
     password: expressJoi.Joi.types.String().min(6).max(16).required()
 };
 router.post('/signup', expressJoi.joiValidate(Joi), (req, res) => {
@@ -55,15 +55,15 @@ router.post('/signup', expressJoi.joiValidate(Joi), (req, res) => {
         } else if (!data) {
             res.json({
                 status: config.Status.STATUS.ERROR.BAD_REQUEST,
-                message: 'Username already Exists in the Database.Please Try Something else '
+                message: 'Email Id already Exists in the Database.Please Try with different Email Id'
             });
         } else {
             res.json({
                 status: config.Status.STATUS.SUCCESS.DEFAULT,
                 message: 'User added successfully',
                 data: {
-                    "username": data.username,
-                    "email": data.email
+                    username: data.username,
+                    email: data.email
                 }
             });
         }
@@ -74,7 +74,7 @@ router.post('/signup', expressJoi.joiValidate(Joi), (req, res) => {
 // User Login
 
 var Joi = {
-    email: expressJoi.Joi.types.String().min(3).max(1000).required(),
+    username: expressJoi.Joi.types.String().min(3).max(30).required(),
     password: expressJoi.Joi.types.String().min(6).max(16).required()
 };
 router.post('/login', expressJoi.joiValidate(Joi), (req, res) => {
@@ -90,15 +90,13 @@ router.post('/login', expressJoi.joiValidate(Joi), (req, res) => {
                 status: data.status,
                 message: data.message,
                 token: 'JWT ' + data.token,
-                data: data.data
             });
         }
     });
 });
 
-
+// route to get user details
 router.get('/getuser', [passport.authenticate('userJWT', { session: false })], (req, res) => {
-    console.log("Inside /getuser");
     controller.userController.getUserDetails(req.query, (err, data) => {
         if (err) {
             res.json({
@@ -122,11 +120,22 @@ router.get('/getuser', [passport.authenticate('userJWT', { session: false })], (
 
 });
 
-// logout
-
-router.get('/logout', (req, res) => {
-    req.logout();
-    res.redirect('/')
+// route to update user info
+router.put('/update/:id', [passport.authenticate('userJWT', { session: false })], (req, res) => {
+    controller.userController.updateUser(req.params.id, req.body, { new: true }, (err, updatedUser) => {
+        if (err) {
+            res.json({
+                status: config.Status.STATUS.ERROR.BAD_REQUEST,
+                message: "User not found!",
+                data: err
+            });
+        } else {
+            res.json({
+                status: config.Status.STATUS.SUCCESS.DEFAULT,
+                message: "User updated successfully..",
+            });
+        }
+    })
 })
 
 module.exports = router;

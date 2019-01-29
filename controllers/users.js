@@ -6,7 +6,7 @@ const userService = require('../services');
 const { Auth } = require('../config');
 
 // controller to get a user
-let getUser = (criteria, callback) => {
+const getUser = (criteria, callback) => {
     userService.userService.getUser(criteria, (err, user) => {
         if (err) {
             callback(err)
@@ -16,8 +16,9 @@ let getUser = (criteria, callback) => {
     })
 }
 
-let userSignup = (data, callback) => {
-    let criteria = { username: data.username };
+// controller to register new user
+const userSignup = (data, callback) => {
+    let criteria = { email: data.email };
     userService.userService.getUser(criteria, (err, user) => {
         if (err) {
             callback(err);
@@ -29,8 +30,8 @@ let userSignup = (data, callback) => {
     })
 };
 
-let userLogin = (data, callback) => {
-    let criteria = { email: data.email };
+const userLogin = (data, callback) => {
+    let criteria = { username: data.username };
     userService.userService.getUser(criteria, (err, udata) => {
         if (err) {
             callback(null, {
@@ -57,17 +58,12 @@ let userLogin = (data, callback) => {
                         password: udata.password
                     }
                     var token = jwt.sign(payload, Auth.Secret, {
-                        expiresIn: 60 * 60 * 24 * 30
+                        expiresIn: "1h"
                     });
                     callback(null, {
                         status: status.STATUS.SUCCESS.DEFAULT,
                         message: 'Login successful.',
-                        token: token,
-                        data: {
-                            "username": udata.username,
-                            "firstname": udata.firstname,
-                            "lastname": udata.lastname
-                        }
+                        token: token
                     });
                 }
             }
@@ -76,7 +72,7 @@ let userLogin = (data, callback) => {
 };
 
 // get user details
-let getUserDetails = (payload, callback) => {
+const getUserDetails = (payload, callback) => {
     let criteria = {
         _id: mongoose.Types.ObjectId(payload.user_id)
     }
@@ -89,9 +85,23 @@ let getUserDetails = (payload, callback) => {
     });
 }
 
+const updateUser = (user_id, updateData, options, callback) => {
+    let critaria = {
+        _id: user_id
+    }
+    userService.userService.updateUser(critaria, updateData, options, (err, updatedUser) => {
+        if (err) {
+            callback(err)
+        } else {
+            callback(null, updatedUser);
+        }
+    })
+}
+
 module.exports = {
     getUser,
     userSignup,
     userLogin,
-    getUserDetails
+    getUserDetails,
+    updateUser
 }

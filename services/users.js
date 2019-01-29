@@ -6,10 +6,14 @@ const addUser = (data, callback) => {
 
 const getUser = (criteria, callback) => {
     models.Users.Users.findOne(criteria, callback);
-};
+}
 
+const updateUser = (criteria, payload, options, callback) => {
+    models.Users.Users.findOneAndUpdate(criteria, payload, options, callback);
+}
 
 module.exports = {
     addUser,
-    getUser
+    getUser,
+    updateUser
 }
