@@ -29,7 +29,7 @@ const userSignup = (data, callback) => {
         }
     })
 };
-
+// user login
 const userLogin = (data, callback) => {
     let criteria = { username: data.username };
     userService.userService.getUser(criteria, (err, udata) => {
@@ -84,7 +84,7 @@ const getUserDetails = (payload, callback) => {
         }
     });
 }
-
+// update the user
 const updateUser = (user_id, updateData, options, callback) => {
     let critaria = {
         _id: user_id

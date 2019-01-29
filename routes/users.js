@@ -117,7 +117,6 @@ router.get('/getuser', [passport.authenticate('userJWT', { session: false })], (
             });
         }
     });
-
 });
 
 // route to update user info
