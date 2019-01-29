@@ -8,6 +8,7 @@ const getUser = (criteria, callback) => {
     models.Users.Users.findOne(criteria, callback);
 };
 
+
 module.exports = {
     addUser,
     getUser
