@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 let mongo = {
-    uri: process.env.MONGO_URI || 'mongodb://localhost/userAuth',
+    uri: (process.env.NODE_ENV === 'production') ? process.env.MONGO_URI : 'mongodb://localhost/userAuth',
     port: 27017
 }
 
