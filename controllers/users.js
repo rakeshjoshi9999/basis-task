@@ -63,6 +63,7 @@ const userLogin = (data, callback) => {
                     callback(null, {
                         status: status.STATUS.SUCCESS.DEFAULT,
                         message: 'Login successful.',
+                        user_id: udata._id,
                         token: token
                     });
                 }
