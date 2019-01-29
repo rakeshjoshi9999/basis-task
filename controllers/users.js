@@ -46,6 +46,7 @@ const userLogin = (data, callback) => {
                     message: 'User email is not registered..!Please try with registered email'
                 });
             } else if (udata) {
+                console.log('udata:', udata);
                 if (udata.password != md5(data.password)) {
                     callback(null, {
                         status: status.STATUS.ERROR.BAD_REQUEST,
@@ -63,8 +64,8 @@ const userLogin = (data, callback) => {
                     callback(null, {
                         status: status.STATUS.SUCCESS.DEFAULT,
                         message: 'Login successful.',
-                        user_id: udata._id,
-                        token: token
+                        token: token,
+                        user_id: udata._id
                     });
                 }
             }

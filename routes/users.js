@@ -90,6 +90,7 @@ router.post('/login', expressJoi.joiValidate(Joi), (req, res) => {
                 status: data.status,
                 message: data.message,
                 token: 'JWT ' + data.token,
+                user_id: data.user_id
             });
         }
     });
