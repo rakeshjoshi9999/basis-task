@@ -16,6 +16,13 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 app.use(config.Routes.Users, routes.userRoute);
 
+// home route
+app.get('/', (req, res) => {
+    res.json({
+        'message': 'Server is Live. Go To /api/user'
+    });
+});
+
 // start the server
 let port = process.env.PORT || 3000;
 app.listen(port, () => {
