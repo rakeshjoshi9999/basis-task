@@ -35,6 +35,13 @@ const strategy = new JwtStrategy(jwtOptions, (jwt_payload, next) => {
 passport.use('userJWT', strategy);
 
 // ::::::::::::::::::::::::ROUTES::::::::::::::::::::
+
+// home route
+router.get('/', (req, res) => {
+    res.json({
+        'message': 'Server is Live'
+    });
+});
 //User signup route
 var Joi = {
     username: expressJoi.Joi.types.String().min(3).max(30).required(),
